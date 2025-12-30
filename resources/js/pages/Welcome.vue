@@ -18,7 +18,7 @@ import {
     Sparkles,
     Zap,
 } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 withDefaults(
     defineProps<{
@@ -71,6 +71,66 @@ function decrementTeamMembers() {
         teamMembers.value--;
     }
 }
+
+const businessTypes = [
+    'beauty businesses',
+    'healthcare businesses',
+    'education businesses',
+    'real estate businesses',
+    'financial services businesses',
+    'legal services businesses',
+    'marketing businesses',
+    'consulting businesses',
+    'IT businesses',
+    'automotive businesses',
+    'local businesses',
+    'all businesses',
+];
+
+const currentText = ref('');
+const currentIndex = ref(0);
+const isDeleting = ref(false);
+let typewriterTimeout: ReturnType<typeof setTimeout> | null = null;
+
+function typeWriter() {
+    const currentWord = businessTypes[currentIndex.value];
+    
+    if (isDeleting.value) {
+        currentText.value = currentWord.substring(0, currentText.value.length - 1);
+        
+        if (currentText.value === '') {
+            isDeleting.value = false;
+            currentIndex.value = (currentIndex.value + 1) % businessTypes.length;
+            typewriterTimeout = setTimeout(typeWriter, 100);
+        } else {
+            typewriterTimeout = setTimeout(typeWriter, 50);
+        }
+    } else {
+        currentText.value = currentWord.substring(0, currentText.value.length + 1);
+        
+        if (currentText.value === currentWord) {
+            typewriterTimeout = setTimeout(() => {
+                isDeleting.value = true;
+                typeWriter();
+            }, 2000);
+        } else {
+            typewriterTimeout = setTimeout(typeWriter, 100);
+        }
+    }
+}
+
+onMounted(() => {
+    currentText.value = '';
+    currentIndex.value = 0;
+    isDeleting.value = false;
+    typeWriter();
+});
+
+onUnmounted(() => {
+    if (typewriterTimeout) {
+        clearTimeout(typewriterTimeout);
+    }
+});
 </script>
 
 <template>
@@ -140,11 +200,11 @@ function decrementTeamMembers() {
                     <h1
                         class="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
                     >
-                        Schedule Smarter,
+                        Schedule App is for
                         <span
                             class="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"
                         >
-                            Not Harder
+                            {{ currentText }}<span class="animate-pulse">|</span>
                         </span>
                     </h1>
                     <p
