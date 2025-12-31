@@ -476,6 +476,7 @@ onUnmounted(() => {
                                         v-for="feature in t(
                                             'pricing.plan.features',
                                         )"
+                                        :key="feature"
                                         class="flex items-start gap-3"
                                     >
                                         <Check
