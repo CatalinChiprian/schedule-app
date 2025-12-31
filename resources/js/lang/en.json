@@ -1,0 +1,80 @@
+{
+    "nav": {
+        "dashboard": "Dashboard",
+        "login": "Log in",
+        "getStarted": "Get Started"
+    },
+    "hero": {
+        "title": "Schedule App is for",
+        "description": "The modern scheduling solution that helps you manage your time, appointments, and tasks with ease. Built for teams and individuals who value efficiency."
+    },
+    "cta": {
+        "getStartedFree": "Get Started Free",
+        "signIn": "Sign In"
+    },
+    "features": {
+        "title": "Everything you need to stay organized",
+        "subtitle": "Powerful features designed to make scheduling effortless",
+        "items": [
+            {
+                "title": "Lightning Fast",
+                "description": "Built with modern technologies for instant performance and seamless user experience."
+            },
+            {
+                "title": "Secure & Reliable",
+                "description": "Your data is protected with enterprise-grade security and regular backups."
+            },
+            {
+                "title": "Beautiful Design",
+                "description": "Enjoy a modern, intuitive interface that makes scheduling a pleasure, not a chore."
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Simple, Transparent Pricing",
+        "subtitle": "Choose the plan that works for you",
+        "monthly": "Monthly",
+        "annually": "Annually",
+        "discount": "10% discount",
+        "plan": {
+            "name": "Appointments",
+            "description": "Manage your schedule and bookings easily online",
+            "teamMembers": "Team Members",
+            "save": "Save",
+            "month": "month",
+            "year": "year",
+            "perYear": "per year",
+            "getStarted": "Get Started",
+            "features": {
+                "onlineCalendar": "Online calendar",
+                "onlineBookings": "Online bookings",
+                "appointmentReminders": "Appointment reminders",
+                "clientManagement": "Client management",
+                "googleCalendarSync": "Google Calendar 2-way sync",
+                "miniWebsite": "Mini website"
+            }
+        }
+    },
+    "finalCta": {
+        "title": "Ready to get started?",
+        "description": "Join thousands of users who are already scheduling smarter",
+        "button": "Create Your Account"
+    },
+    "footer": {
+        "rights": "All rights reserved."
+    },
+    "businessTypes": [
+        "beauty industries",
+        "healthcare industries",
+        "education industries",
+        "real estate industries",
+        "financial industries",
+        "legal industries",
+        "marketing industries",
+        "sales industries",
+        "customer service industries",
+        "hr industries",
+        "sports industries",
+        "all industries"
+    ]
+}

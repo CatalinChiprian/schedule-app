@@ -1,0 +1,80 @@
+{
+    "nav": {
+        "dashboard": "Panou de control",
+        "login": "Conectare",
+        "getStarted": "Începe"
+    },
+    "hero": {
+        "title": "Schedule App este pentru",
+        "description": "Soluția modernă de programare care vă ajută să vă gestionați timpul, programările și sarcinile cu ușurință. Construit pentru echipe și persoane care prețuiesc eficiența."
+    },
+    "cta": {
+        "getStartedFree": "Începe Gratuit",
+        "signIn": "Conectează-te"
+    },
+    "features": {
+        "title": "Tot ce ai nevoie pentru a rămâne organizat",
+        "subtitle": "Funcții puternice concepute pentru a face programarea fără efort",
+        "items": [
+            {
+                "title": "Foarte Rapid",
+                "description": "Construit cu tehnologii moderne pentru performanță instantanee și experiență de utilizare fără cusur."
+            },
+            {
+                "title": "Sigur și Fiabil",
+                "description": "Datele dvs. sunt protejate cu securitate de nivel enterprise și backup-uri regulate."
+            },
+            {
+                "title": "Design Frumos",
+                "description": "Bucurați-vă de o interfață modernă și intuitivă care face programarea o plăcere, nu o corvoadă."
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Prețuri Simple și Transparente",
+        "subtitle": "Alege planul care funcționează pentru tine",
+        "monthly": "Lunar",
+        "annually": "Anual",
+        "discount": "10% reducere",
+        "plan": {
+            "name": "Programări",
+            "description": "Gestionează-ți programul și rezervările cu ușurință online",
+            "teamMembers": "Membri ai echipei",
+            "save": "Economisește",
+            "month": "lună",
+            "year": "an",
+            "perYear": "pe an",
+            "getStarted": "Începe",
+            "features": {
+                "onlineCalendar": "Calendar online",
+                "onlineBookings": "Rezervări online",
+                "appointmentReminders": "Mementouri pentru programări",
+                "clientManagement": "Gestionarea clienților",
+                "googleCalendarSync": "Sincronizare bidirecțională cu Google Calendar",
+                "miniWebsite": "Site web mini"
+            }
+        }
+    },
+    "finalCta": {
+        "title": "Gata să începi?",
+        "description": "Alătură-te miilor de utilizatori care programează deja mai inteligent",
+        "button": "Creează-ți contul"
+    },
+    "footer": {
+        "rights": "Toate drepturile rezervate."
+    },
+    "businessTypes": [
+        "industrii de frumusețe",
+        "industrii de sănătate",
+        "industrii de educație",
+        "industrii imobiliare",
+        "industrii financiare",
+        "industrii legale",
+        "industrii de marketing",
+        "industrii de vânzări",
+        "industrii de servicii client",
+        "industrii de hr",
+        "industrii sportive",
+        "toate industriile"
+    ]
+}

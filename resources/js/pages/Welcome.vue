@@ -7,18 +7,26 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useI18n } from '@/composables/useI18n';
 import { dashboard, login, register } from '@/routes';
 import { Head, Link } from '@inertiajs/vue3';
 import {
     ArrowRight,
     Check,
+    Globe,
     Minus,
     Plus,
     Shield,
     Sparkles,
     Zap,
 } from 'lucide-vue-next';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
 withDefaults(
     defineProps<{
@@ -28,6 +36,8 @@ withDefaults(
         canRegister: true,
     },
 );
+
+const { t, currentLanguage, setLanguage, availableLanguages } = useI18n();
 
 const billingPeriod = ref<'monthly' | 'yearly'>('monthly');
 const teamMembers = ref(1);
@@ -57,7 +67,9 @@ const displayPrice = computed(() => {
 });
 
 const pricePeriod = computed(() => {
-    return billingPeriod.value === 'yearly' ? 'year' : 'month';
+    return billingPeriod.value === 'yearly'
+        ? t('pricing.plan.year')
+        : t('pricing.plan.month');
 });
 
 function incrementTeamMembers() {
@@ -72,20 +84,11 @@ function decrementTeamMembers() {
     }
 }
 
-const businessTypes = [
-    'beauty businesses',
-    'healthcare businesses',
-    'education businesses',
-    'real estate businesses',
-    'financial services businesses',
-    'legal services businesses',
-    'marketing businesses',
-    'consulting businesses',
-    'IT businesses',
-    'automotive businesses',
-    'local businesses',
-    'all businesses',
-];
+// Get business types from translations
+const businessTypes = computed(() => {
+    const types = t('businessTypes');
+    return Array.isArray(types) ? types : [];
+});
 
 const currentText = ref('');
 const currentIndex = ref(0);
@@ -93,21 +96,28 @@ const isDeleting = ref(false);
 let typewriterTimeout: ReturnType<typeof setTimeout> | null = null;
 
 function typeWriter() {
-    const currentWord = businessTypes[currentIndex.value];
-    
+    const currentWord = businessTypes.value[currentIndex.value];
+
     if (isDeleting.value) {
-        currentText.value = currentWord.substring(0, currentText.value.length - 1);
-        
+        currentText.value = currentWord.substring(
+            0,
+            currentText.value.length - 1,
+        );
+
         if (currentText.value === '') {
             isDeleting.value = false;
-            currentIndex.value = (currentIndex.value + 1) % businessTypes.length;
+            currentIndex.value =
+                (currentIndex.value + 1) % businessTypes.value.length;
             typewriterTimeout = setTimeout(typeWriter, 100);
         } else {
             typewriterTimeout = setTimeout(typeWriter, 50);
         }
     } else {
-        currentText.value = currentWord.substring(0, currentText.value.length + 1);
-        
+        currentText.value = currentWord.substring(
+            0,
+            currentText.value.length + 1,
+        );
+
         if (currentText.value === currentWord) {
             typewriterTimeout = setTimeout(() => {
                 isDeleting.value = true;
@@ -118,6 +128,16 @@ function typeWriter() {
         }
     }
 }
+
+watch(currentLanguage, () => {
+    currentText.value = '';
+    currentIndex.value = 0;
+    isDeleting.value = false;
+    if (typewriterTimeout) {
+        clearTimeout(typewriterTimeout);
+    }
+    typeWriter();
+});
 
 onMounted(() => {
     currentText.value = '';
@@ -172,22 +192,51 @@ onUnmounted(() => {
                         <span class="text-lg font-semibold">Schedule App</span>
                     </div>
                     <div class="flex items-center gap-4">
+                        <!-- Language Selector -->
+                        <DropdownMenu>
+                            <DropdownMenuTrigger as-child>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    class="h-9 w-9"
+                                >
+                                    <Globe class="h-4 w-4" />
+                                    <span class="sr-only">Select language</span>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                    v-for="lang in availableLanguages"
+                                    :key="lang.code"
+                                    @click="setLanguage(lang.code)"
+                                    :class="{
+                                        'bg-accent':
+                                            currentLanguage === lang.code,
+                                    }"
+                                >
+                                    {{ lang.name }}
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
                         <Link
                             v-if="$page.props.auth.user"
                             :href="dashboard()"
                             class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                         >
-                            Dashboard
+                            {{ t('nav.dashboard') }}
                         </Link>
                         <template v-else>
                             <Link
                                 :href="login()"
                                 class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                             >
-                                Log in
+                                {{ t('nav.login') }}
                             </Link>
                             <Link v-if="canRegister" :href="register()">
-                                <Button variant="default"> Get Started </Button>
+                                <Button variant="default">
+                                    {{ t('nav.getStarted') }}
+                                </Button>
                             </Link>
                         </template>
                     </div>
@@ -200,26 +249,25 @@ onUnmounted(() => {
                     <h1
                         class="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
                     >
-                        Schedule App is for
+                        {{ t('hero.title') }}
                         <span
                             class="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"
                         >
-                            {{ currentText }}<span class="animate-pulse">|</span>
+                            {{ currentText
+                            }}<span class="animate-pulse">|</span>
                         </span>
                     </h1>
                     <p
                         class="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl"
                     >
-                        The modern scheduling solution that helps you manage
-                        your time, appointments, and tasks with ease. Built for
-                        teams and individuals who value efficiency.
+                        {{ t('hero.description') }}
                     </p>
                     <div
                         class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
                     >
                         <Link v-if="canRegister" :href="register()">
                             <Button size="lg" class="group">
-                                Get Started Free
+                                {{ t('cta.getStartedFree') }}
                                 <ArrowRight
                                     class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
                                 />
@@ -227,7 +275,7 @@ onUnmounted(() => {
                         </Link>
                         <Link :href="login()">
                             <Button size="lg" variant="outline">
-                                Sign In
+                                {{ t('cta.signIn') }}
                             </Button>
                         </Link>
                     </div>
@@ -241,56 +289,38 @@ onUnmounted(() => {
                         <h2
                             class="text-3xl font-bold tracking-tight sm:text-4xl"
                         >
-                            Everything you need to stay organized
+                            {{ t('features.title') }}
                         </h2>
                         <p class="mt-4 text-lg text-muted-foreground">
-                            Powerful features designed to make scheduling
-                            effortless
+                            {{ t('features.subtitle') }}
                         </p>
                     </div>
 
                     <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                        <Card>
+                        <Card
+                            v-for="(feature, index) in t('features.items')"
+                            :key="index"
+                        >
                             <CardHeader>
                                 <div
                                     class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10"
                                 >
-                                    <Zap class="h-6 w-6 text-primary" />
+                                    <Zap
+                                        v-if="index === 0"
+                                        class="h-6 w-6 text-primary"
+                                    />
+                                    <Shield
+                                        v-else-if="index === 1"
+                                        class="h-6 w-6 text-primary"
+                                    />
+                                    <Sparkles
+                                        v-else
+                                        class="h-6 w-6 text-primary"
+                                    />
                                 </div>
-                                <CardTitle>Lightning Fast</CardTitle>
+                                <CardTitle>{{ feature.title }}</CardTitle>
                                 <CardDescription>
-                                    Built with modern technologies for instant
-                                    performance and seamless user experience.
-                                </CardDescription>
-                            </CardHeader>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <div
-                                    class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10"
-                                >
-                                    <Shield class="h-6 w-6 text-primary" />
-                                </div>
-                                <CardTitle>Secure & Reliable</CardTitle>
-                                <CardDescription>
-                                    Your data is protected with enterprise-grade
-                                    security and regular backups.
-                                </CardDescription>
-                            </CardHeader>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <div
-                                    class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10"
-                                >
-                                    <Sparkles class="h-6 w-6 text-primary" />
-                                </div>
-                                <CardTitle>Beautiful Design</CardTitle>
-                                <CardDescription>
-                                    Enjoy a modern, intuitive interface that
-                                    makes scheduling a pleasure, not a chore.
+                                    {{ feature.description }}
                                 </CardDescription>
                             </CardHeader>
                         </Card>
@@ -305,10 +335,10 @@ onUnmounted(() => {
                         <h2
                             class="text-3xl font-bold tracking-tight sm:text-4xl"
                         >
-                            Simple, Transparent Pricing
+                            {{ t('pricing.title') }}
                         </h2>
                         <p class="mt-4 text-lg text-muted-foreground">
-                            Choose the plan that works for you
+                            {{ t('pricing.subtitle') }}
                         </p>
                     </div>
 
@@ -322,7 +352,7 @@ onUnmounted(() => {
                                     : 'text-muted-foreground',
                             ]"
                         >
-                            Monthly
+                            {{ t('pricing.monthly') }}
                         </span>
                         <button
                             @click="
@@ -356,13 +386,13 @@ onUnmounted(() => {
                                         : 'text-muted-foreground',
                                 ]"
                             >
-                                Annually
+                                {{ t('pricing.annually') }}
                             </span>
                             <span
                                 v-if="billingPeriod === 'yearly'"
                                 class="text-xs font-medium text-green-600"
                             >
-                                10% discount
+                                {{ t('pricing.discount') }}
                             </span>
                         </div>
                     </div>
@@ -377,11 +407,10 @@ onUnmounted(() => {
                                 class="bg-gradient-to-br from-blue-500 to-teal-500 p-8 text-center text-white"
                             >
                                 <h3 class="mb-2 text-2xl font-bold">
-                                    Appointments
+                                    {{ t('pricing.plan.name') }}
                                 </h3>
                                 <p class="text-sm text-blue-50">
-                                    Manage your schedule and bookings easily
-                                    online
+                                    {{ t('pricing.plan.description') }}
                                 </p>
                             </div>
 
@@ -402,10 +431,10 @@ onUnmounted(() => {
                                         v-if="billingPeriod === 'yearly'"
                                         class="mt-2 text-sm text-muted-foreground"
                                     >
-                                        Save €{{
+                                        {{ t('pricing.plan.save') }} €{{
                                             monthlyPrice * 12 - yearlyPrice
                                         }}
-                                        per year
+                                        {{ t('pricing.plan.perYear') }}
                                     </p>
                                 </div>
 
@@ -414,7 +443,7 @@ onUnmounted(() => {
                                     <label
                                         class="mb-3 block text-center text-sm font-medium"
                                     >
-                                        Team Members
+                                        {{ t('pricing.plan.teamMembers') }}
                                     </label>
                                     <div
                                         class="flex items-center justify-center gap-4"
@@ -443,45 +472,18 @@ onUnmounted(() => {
 
                                 <!-- Features List -->
                                 <ul class="mb-8 space-y-3">
-                                    <li class="flex items-start gap-3">
+                                    <li
+                                        v-for="feature in t(
+                                            'pricing.plan.features',
+                                        )"
+                                        class="flex items-start gap-3"
+                                    >
                                         <Check
                                             class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary"
                                         />
-                                        <span class="text-sm"
-                                            >Online calendar</span
-                                        >
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <Check
-                                            class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary"
-                                        />
-                                        <span class="text-sm"
-                                            >Online bookings</span
-                                        >
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <Check
-                                            class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary"
-                                        />
-                                        <span class="text-sm"
-                                            >Appointment reminders</span
-                                        >
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <Check
-                                            class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary"
-                                        />
-                                        <span class="text-sm"
-                                            >Client management</span
-                                        >
-                                    </li>
-                                    <li class="flex items-start gap-3">
-                                        <Check
-                                            class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary"
-                                        />
-                                        <span class="text-sm"
-                                            >Google Calendar 2-way sync</span
-                                        >
+                                        <span class="text-sm">{{
+                                            feature
+                                        }}</span>
                                     </li>
                                 </ul>
 
@@ -492,7 +494,7 @@ onUnmounted(() => {
                                     class="block w-full"
                                 >
                                     <Button size="lg" class="group w-full">
-                                        Get Started
+                                        {{ t('pricing.plan.getStarted') }}
                                         <ArrowRight
                                             class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
                                         />
@@ -510,18 +512,17 @@ onUnmounted(() => {
                     class="border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
                 >
                     <CardHeader class="text-center">
-                        <CardTitle class="text-3xl"
-                            >Ready to get started?</CardTitle
-                        >
+                        <CardTitle class="text-3xl">{{
+                            t('finalCta.title')
+                        }}</CardTitle>
                         <CardDescription class="text-base">
-                            Join thousands of users who are already scheduling
-                            smarter
+                            {{ t('finalCta.description') }}
                         </CardDescription>
                     </CardHeader>
                     <CardContent class="flex justify-center">
                         <Link v-if="canRegister" :href="register()">
                             <Button size="lg" class="group">
-                                Create Your Account
+                                {{ t('finalCta.button') }}
                                 <ArrowRight
                                     class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
                                 />
@@ -548,8 +549,8 @@ onUnmounted(() => {
                             >
                         </div>
                         <p class="text-sm text-muted-foreground">
-                            © {{ new Date().getFullYear() }} Schedule App. All
-                            rights reserved.
+                            © {{ new Date().getFullYear() }} Schedule App.
+                            {{ t('footer.rights') }}
                         </p>
                     </div>
                 </div>
