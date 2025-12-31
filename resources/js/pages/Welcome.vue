@@ -24,6 +24,7 @@ import {
     Plus,
     Shield,
     Sparkles,
+    X,
     Zap,
 } from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
@@ -323,6 +324,87 @@ onUnmounted(() => {
                                     {{ feature.description }}
                                 </CardDescription>
                             </CardHeader>
+                        </Card>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Before/After Comparison Section -->
+            <section class="container mx-auto px-4 py-20">
+                <div class="mx-auto max-w-6xl">
+                    <div class="mb-12 text-center">
+                        <h2
+                            class="text-3xl font-bold tracking-tight sm:text-4xl"
+                        >
+                            {{ t('comparison.title') }}
+                        </h2>
+                    </div>
+
+                    <div class="grid gap-6 md:grid-cols-2 lg:gap-8">
+                        <!-- Before Card -->
+                        <Card class="bg-gray-50 dark:bg-gray-900">
+                            <CardHeader>
+                                <CardTitle class="text-xl">
+                                    {{ t('comparison.before.title') }}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <ul class="space-y-4">
+                                    <li
+                                        v-for="(item, index) in t(
+                                            'comparison.before.items',
+                                        )"
+                                        :key="index"
+                                        class="flex items-start gap-3"
+                                    >
+                                        <div
+                                            class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-700"
+                                        >
+                                            <X
+                                                class="h-3.5 w-3.5 text-gray-600 dark:text-gray-400"
+                                            />
+                                        </div>
+                                        <span
+                                            class="text-sm text-gray-700 dark:text-gray-300"
+                                        >
+                                            {{ item }}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </CardContent>
+                        </Card>
+
+                        <!-- With Card -->
+                        <Card
+                            class="border-t-4 border-t-primary bg-gray-900 text-white dark:bg-gray-950"
+                        >
+                            <CardHeader>
+                                <CardTitle class="text-xl text-white">
+                                    {{ t('comparison.with.title') }}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <ul class="space-y-4">
+                                    <li
+                                        v-for="(item, index) in t(
+                                            'comparison.with.items',
+                                        )"
+                                        :key="index"
+                                        class="flex items-start gap-3"
+                                    >
+                                        <div
+                                            class="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary"
+                                        >
+                                            <Check
+                                                class="h-3.5 w-3.5 text-white"
+                                            />
+                                        </div>
+                                        <span class="text-sm text-gray-100">
+                                            {{ item }}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </CardContent>
                         </Card>
                     </div>
                 </div>

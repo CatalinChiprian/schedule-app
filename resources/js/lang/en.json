@@ -30,6 +30,29 @@
             }
         ]
     },
+    "comparison": {
+        "title": "Stop the scheduling chaos",
+        "before": {
+            "title": "Before Schedule App",
+            "items": [
+                "Answering phone calls all day to book appointments",
+                "Double bookings and scheduling conflicts",
+                "Clients calling to reschedule or cancel",
+                "No-show appointments with no reminders",
+                "Manual calendar management and syncing"
+            ]
+        },
+        "with": {
+            "title": "With Schedule App",
+            "items": [
+                "Clients book online 24/7 through your mini website",
+                "Automatic conflict detection prevents double bookings",
+                "Clients can reschedule or cancel themselves",
+                "Email reminders sent automatically to reduce no-shows",
+                "Seamless Google Calendar sync keeps everything in one place"
+            ]
+        }
+    },
     "pricing": {
         "title": "Simple, Transparent Pricing",
         "subtitle": "Choose the plan that works for you",
