@@ -87,17 +87,10 @@
         "rights": "All rights reserved."
     },
     "businessTypes": [
-        "beauty industries",
-        "healthcare industries",
-        "education industries",
-        "real estate industries",
-        "financial industries",
-        "legal industries",
-        "marketing industries",
-        "sales industries",
-        "customer service industries",
-        "hr industries",
-        "sports industries",
-        "all industries"
+        "barbershops",
+        "beauty salons",
+        "nails salons",
+        "massage salons",
+        "tattoo salons"
     ]
 }

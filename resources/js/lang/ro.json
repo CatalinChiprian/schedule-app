@@ -87,17 +87,10 @@
         "rights": "Toate drepturile rezervate."
     },
     "businessTypes": [
-        "industrii de frumusețe",
-        "industrii de sănătate",
-        "industrii de educație",
-        "industrii imobiliare",
-        "industrii financiare",
-        "industrii legale",
-        "industrii de marketing",
-        "industrii de vânzări",
-        "industrii de servicii client",
-        "industrii de hr",
-        "industrii sportive",
-        "toate industriile"
+        "barbershop-uri",
+        "saloane de frumusețe",
+        "saloane de unghii",
+        "saloane de masaj",
+        "saloane de tatuaje"
     ]
 }
